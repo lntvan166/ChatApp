@@ -21,7 +21,6 @@ public class RegisterForm {
     private JFrame frameMain;
 
     private JTextField textField1;
-    private JTextField textField2;
     private JButton registerButton;
     private JPanel panelMain;
     private JButton cancelButton;
@@ -33,17 +32,16 @@ public class RegisterForm {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String username = textField1.getText();
-                String name = textField2.getText();
                 String password = String.valueOf(passwordField1.getPassword());
                 String confirm = String.valueOf(passwordField2.getPassword());
 
-                if (Objects.equals(username, "") || Objects.equals(name, "") || password.equals(""))
+                if (Objects.equals(username, "") ||  password.equals(""))
                     JOptionPane.showMessageDialog(null, "Cannot use empty information!");
                 else {
                     if (!password.equals(confirm)) {
                         JOptionPane.showMessageDialog(null, "Password confirm failed!");
                     } else {
-                        AppUtil.userList.add(new User(username, name, password));
+                        AppUtil.userList.add(new User(username, password));
                         try {
                             AppUtil.writeUser(AppUtil.userList);
                         } catch (IOException ex) {

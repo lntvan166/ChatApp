@@ -28,9 +28,8 @@ public class AppUtil {
             String[] buffer = line.split("`");
             String username = buffer[0];
             String password = buffer[1];
-            String name = buffer[2];
 
-            User tempUser = new User(username, name, password);
+            User tempUser = new User(username, password);
             userList.add(tempUser);
 
         }
@@ -80,14 +79,14 @@ public class AppUtil {
 
     }
 
-    public static String getNameByUsername(String username) {
-        String name = "";
-        for(User user: userList) {
-            if(Objects.equals(user.getUsername(), username)) {
-                name = user.getName();
-            }
-        }
-
-        return name;
-    }
+//    public static String getNameByUsername(String username) {
+//        String name = "";
+//        for(User user: userList) {
+//            if(Objects.equals(user.getUsername(), username)) {
+//                name = user.getName();
+//            }
+//        }
+//
+//        return name;
+//    }
 }

@@ -33,7 +33,7 @@ public class LoginForm {
                     JOptionPane.showMessageDialog(null, "Invalid username/password!");
                 } else {
                     JOptionPane.showMessageDialog(null, "Login successfully!");
-                    AppUtil.user = AppUtil.getNameByUsername(username);
+                    AppUtil.user = username;
                 }
             }
         });

@@ -8,12 +8,10 @@ package com.app.util;
  */
 public class User {
     private String username;
-    private String name;
     private String password;
 
-    public User(String username, String name, String password) {
+    public User(String username, String password) {
         this.username = username;
-        this.name = name;
         this.password = password;
     }
 
@@ -23,14 +21,6 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getPassword() {
@@ -43,6 +33,6 @@ public class User {
 
     // format: username`password`name
     public String toString() {
-        return username + "`" + password + "`" + name;
+        return username + "`" + password;
     }
 }
