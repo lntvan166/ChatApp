@@ -1,5 +1,10 @@
 package com.app.util;
 
+import com.app.client.ThisClient;
+import com.app.menu.UserOnline;
+
+import java.util.List;
+
 /**
  * com.app.util
  * Create by Le Nguyen Tu Van
@@ -9,6 +14,9 @@ package com.app.util;
 public class User {
     private String username;
     private String password;
+    public static ThisClient client;
+    public static List<Message> messageList;
+    public static UserOnline userOnline;
 
     public User(String username, String password) {
         this.username = username;
@@ -34,5 +42,11 @@ public class User {
     // format: username`password`name
     public String toString() {
         return username + "`" + password;
+    }
+
+    public static void reset() {
+        client = null;
+        messageList = null;
+        userOnline = null;
     }
 }

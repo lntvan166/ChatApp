@@ -44,7 +44,7 @@ public class AppUtil {
     public static void writeUser(List<User> userList) throws IOException {
         BufferedWriter fileOut = new BufferedWriter(new FileWriter("userData.txt"));
 
-        for(User user : userList) {
+        for (User user : userList) {
             fileOut.write(user.toString());
             fileOut.newLine();
         }
@@ -54,7 +54,7 @@ public class AppUtil {
 
     public static boolean isContainUser(String username) {
         boolean isContain = false;
-        for(User user: userList) {
+        for (User user : userList) {
             if (Objects.equals(user.getUsername(), username)) {
                 isContain = true;
                 break;
@@ -67,9 +67,9 @@ public class AppUtil {
     public static boolean authUser(String username, String password) {
         boolean isValid = false;
 
-        if(isContainUser(username)){
-            for(User user: userList) {
-                if(Objects.equals(user.getUsername(), username)) {
+        if (isContainUser(username)) {
+            for (User user : userList) {
+                if (Objects.equals(user.getUsername(), username)) {
                     isValid = Objects.equals(user.getPassword(), password);
                 }
             }

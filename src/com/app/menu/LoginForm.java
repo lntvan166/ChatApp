@@ -1,12 +1,16 @@
 package com.app.menu;
 
+import com.app.client.ThisClient;
 import com.app.util.AppUtil;
+import com.app.util.User;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.net.Socket;
 
 /**
  * com.app.menu
@@ -34,6 +38,19 @@ public class LoginForm {
                 } else {
                     JOptionPane.showMessageDialog(null, "Login successfully!");
                     AppUtil.user = username;
+                    try {
+                        Socket socket = new Socket("localhost", 1234);
+
+                        User.client = new ThisClient(socket, username);
+                        User.userOnline = new UserOnline();
+
+                        User.client.getUserOnline();
+                        User.client.listenForMessage();
+
+                        frameMain.setVisible(false);
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(null, ex);
+                    }
                 }
             }
         });
@@ -62,6 +79,10 @@ public class LoginForm {
         });
         frameMain.setLocationRelativeTo(null);
         frameMain.pack();
+        frameMain.setVisible(true);
+    }
+
+    public void show() {
         frameMain.setVisible(true);
     }
 }
