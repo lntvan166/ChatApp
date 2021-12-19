@@ -62,7 +62,7 @@ public class ThisClient {
                 while (socket.isConnected()) {
                     try {
                         msgFromAnother = bufferedReader.readLine();
-                        System.out.println("Receive: "+msgFromAnother);
+                        System.out.println("Receive: " + msgFromAnother);
                         handleMessageReceive(msgFromAnother);
                     } catch (IOException e) {
                         closeEverything(socket, bufferedWriter, bufferedReader);
@@ -91,19 +91,21 @@ public class ThisClient {
 
 
     public static void handleMessageReceive(String message) {
+//        message = "GetUserOnline@#@irok@#@admin ah";
         String[] buffer = message.split("@#@");
         String type = buffer[0];
         String userFrom = buffer[1];
         String bodyMessage = buffer[2];
-        if (!Objects.equals(buffer[2], "noOneOnline")) {
-            if (Objects.equals(type, "GetUserOnline")) {
+        if (Objects.equals(type, "GetUserOnline")) {
+            if (!Objects.equals(buffer[2], "noOneOnline")) {
                 String[] userOnline = bodyMessage.split(" ");
-                for (String user : userOnline) {
-                    System.out.println(user);
-                }
+                User.userOnline.showUserList(userOnline);
+            } else {
+                User.userOnline.showNoOneOnline();
             }
-        }else{
-            User.userOnline.showNoOneOnline();
+        }
+        if (Objects.equals(type, "message")) {
+
         }
     }
 }

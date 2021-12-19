@@ -42,7 +42,7 @@ public class LoginForm {
                         Socket socket = new Socket("localhost", 1234);
 
                         User.client = new ThisClient(socket, username);
-                        User.userOnline = new UserOnline();
+                        User.userOnline = new UserOnline(username);
 
                         User.client.getUserOnline();
                         User.client.listenForMessage();

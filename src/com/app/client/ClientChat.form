@@ -29,43 +29,37 @@
       <scrollpane id="821ca">
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <preferred-size width="-1" height="250"/>
+            <preferred-size width="400" height="250"/>
           </grid>
         </constraints>
         <properties/>
         <border type="none"/>
         <children>
-          <component id="81c82" class="javax.swing.JTextArea" binding="bodyMessage">
+          <component id="48a35" class="javax.swing.JTextArea" binding="textArea1" default-binding="true">
             <constraints/>
-            <properties>
-              <editable value="false"/>
-            </properties>
+            <properties/>
           </component>
         </children>
       </scrollpane>
-      <grid id="b70cf" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+      <grid id="b70cf" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints>
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
         <border type="none"/>
         <children>
-          <component id="6e048" class="javax.swing.JTextField" binding="chatField">
-            <constraints/>
+          <component id="11d5" class="javax.swing.JTextField" binding="chatField">
+            <constraints border-constraint="Center"/>
             <properties/>
-            <clientProperties>
-              <caretWidth class="java.lang.Integer" value="300"/>
-            </clientProperties>
           </component>
-          <component id="4e5a2" class="javax.swing.JButton" binding="sendButton" default-binding="true">
-            <constraints/>
+          <component id="bcd6f" class="javax.swing.JButton" binding="sendButton" default-binding="true">
+            <constraints border-constraint="East"/>
             <properties>
-              <horizontalAlignment value="0"/>
               <text value="Send"/>
             </properties>
           </component>
-          <component id="83ca0" class="javax.swing.JButton" binding="fileButton" default-binding="true">
-            <constraints/>
+          <component id="66901" class="javax.swing.JButton" binding="fileButton">
+            <constraints border-constraint="West"/>
             <properties>
               <text value="File"/>
             </properties>

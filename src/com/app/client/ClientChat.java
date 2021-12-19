@@ -1,6 +1,8 @@
 package com.app.client;
 
+import com.app.util.AppUtil;
 import com.app.util.Message;
+import com.app.util.User;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -22,21 +24,28 @@ public class ClientChat {
     private JFrame frameMain;
     private JPanel mainPanel;
     private JLabel username;
-    private JButton sendButton;
     private JTextField chatField;
+    private JButton sendButton;
+    private JTextArea textArea1;
     private JButton fileButton;
-    private JTextArea bodyMessage;
 
 
     public ClientChat(String userContact) {
+
+
+        this.userContact = userContact;
+        username.setText(userContact);
+
+
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                String message = chatField.getText();
+                User.client.sendMessage(userContact, message);
             }
         });
 
-        frameMain = new JFrame("App chat login");
+        frameMain = new JFrame("[" + AppUtil.user + "] chat with " + userContact);
         frameMain.setContentPane(mainPanel);
         frameMain.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frameMain.addWindowListener(new WindowAdapter() {
@@ -47,10 +56,6 @@ public class ClientChat {
         });
         frameMain.setLocationRelativeTo(null);
         frameMain.pack();
-        frameMain.setVisible(true);
-
-        this.userContact = userContact;
-        username.setText(userContact);
     }
 
     public void show() {
