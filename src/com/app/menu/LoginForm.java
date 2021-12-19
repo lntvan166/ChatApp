@@ -36,7 +36,6 @@ public class LoginForm {
                 if(!AppUtil.authUser(username, password)) {
                     JOptionPane.showMessageDialog(null, "Invalid username/password!");
                 } else {
-                    JOptionPane.showMessageDialog(null, "Login successfully!");
                     AppUtil.user = username;
                     try {
                         Socket socket = new Socket("localhost", 1234);

@@ -1,5 +1,6 @@
 package com.app.util;
 
+import com.app.client.ClientChat;
 import com.app.client.ThisClient;
 import com.app.menu.UserOnline;
 
@@ -15,7 +16,6 @@ public class User {
     private String username;
     private String password;
     public static ThisClient client;
-    public static List<Message> messageList;
     public static UserOnline userOnline;
 
     public User(String username, String password) {
@@ -46,7 +46,6 @@ public class User {
 
     public static void reset() {
         client = null;
-        messageList = null;
         userOnline = null;
     }
 }

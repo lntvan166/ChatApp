@@ -105,7 +105,7 @@ public class ThisClient {
             }
         }
         if (Objects.equals(type, "message")) {
-
+            User.userOnline.receiveMessage(userFrom, bodyMessage);
         }
     }
 }

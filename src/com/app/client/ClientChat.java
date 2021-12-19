@@ -1,7 +1,6 @@
 package com.app.client;
 
 import com.app.util.AppUtil;
-import com.app.util.Message;
 import com.app.util.User;
 
 import javax.swing.*;
@@ -17,7 +16,7 @@ import java.awt.event.WindowEvent;
  * Description: ...
  */
 public class ClientChat {
-    private Message message;
+    private String _message;
 
     private String userContact;
 
@@ -35,6 +34,7 @@ public class ClientChat {
 
         this.userContact = userContact;
         username.setText(userContact);
+        _message = "";
 
 
         sendButton.addActionListener(new ActionListener() {
@@ -42,6 +42,10 @@ public class ClientChat {
             public void actionPerformed(ActionEvent e) {
                 String message = chatField.getText();
                 User.client.sendMessage(userContact, message);
+
+                chatField.setText("");
+                _message += AppUtil.user + ": "+ message + "\n";
+                refresh();
             }
         });
 
@@ -58,7 +62,22 @@ public class ClientChat {
         frameMain.pack();
     }
 
+    public String getUserContact() {
+        return userContact;
+    }
+
+    public void addMessage(String message) {
+        _message += userContact + ": "+ message + "\n";
+        refresh();
+    }
+
     public void show() {
         frameMain.setVisible(true);
+    }
+
+    public void refresh() {
+        textArea1.setText(_message);
+        textArea1.validate();
+        textArea1.repaint();
     }
 }

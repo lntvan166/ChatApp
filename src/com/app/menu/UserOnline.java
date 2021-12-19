@@ -1,6 +1,8 @@
 package com.app.menu;
 
 import com.app.client.ClientChat;
+import com.app.util.ChatWindow;
+import com.app.util.Message;
 import com.app.util.User;
 
 import javax.swing.*;
@@ -10,6 +12,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * com.app.menu
@@ -19,14 +24,16 @@ import java.io.IOException;
  */
 public class UserOnline {
     private String username;
+    private List<ClientChat> clientChatList;
 
-    public static JFrame frameMain;
+    private JFrame frameMain;
     private JPanel panelMain;
     private JButton refreshButton;
     private JLabel label;
     private JPanel userPane;
 
     UserOnline(String username) {
+        clientChatList = new ArrayList<>();
         this.username = username;
         label.setText("Hi, "+username);
 
@@ -89,6 +96,7 @@ public class UserOnline {
         for(int i=0; i<size;i++) {
             String name = userOnline[i];
             ClientChat temp = new ClientChat(name);
+            clientChatList.add(temp);
 
             buttons[i] = new JButton(name);
             buttons[i].setSize(100, 100);
@@ -103,5 +111,13 @@ public class UserOnline {
         }
 
         refresh();
+    }
+
+    public void receiveMessage(String userContact, String message) {
+        for(ClientChat clientChat: clientChatList) {
+            if (Objects.equals(userContact, clientChat.getUserContact())){
+                clientChat.addMessage(message);
+            }
+        }
     }
 }
