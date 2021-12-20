@@ -3,6 +3,7 @@ package com.app.menu;
 import com.app.client.ClientChat;
 import com.app.util.ChatWindow;
 import com.app.util.Message;
+import com.app.util.MyFile;
 import com.app.util.User;
 
 import javax.swing.*;
@@ -37,7 +38,7 @@ public class UserOnline {
         this.username = username;
         label.setText("Hi, "+username);
 
-        frameMain = new JFrame("User Online");
+        frameMain = new JFrame("App Chat");
         frameMain.setContentPane(panelMain);
         frameMain.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frameMain.addWindowListener(new WindowAdapter() {
@@ -117,6 +118,14 @@ public class UserOnline {
         for(ClientChat clientChat: clientChatList) {
             if (Objects.equals(userContact, clientChat.getUserContact())){
                 clientChat.addMessage(message);
+            }
+        }
+    }
+
+    public void receiveFile(String userContact, String fileName, byte[] file) {
+        for(ClientChat clientChat: clientChatList) {
+            if (Objects.equals(userContact, clientChat.getUserContact())){
+
             }
         }
     }

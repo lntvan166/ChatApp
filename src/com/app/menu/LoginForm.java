@@ -38,7 +38,7 @@ public class LoginForm {
                 } else {
                     AppUtil.user = username;
                     try {
-                        Socket socket = new Socket("localhost", 1234);
+                        Socket socket = new Socket("localhost", 1606);
 
                         User.client = new ThisClient(socket, username);
                         User.userOnline = new UserOnline(username);

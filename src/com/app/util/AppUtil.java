@@ -1,5 +1,8 @@
 package com.app.util;
 
+import javax.swing.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,4 +92,46 @@ public class AppUtil {
 //
 //        return name;
 //    }
+
+    public static String getFileExtension(String filename) {
+        int i = filename.lastIndexOf(".");
+
+        if (i > 0) {
+            return filename.substring(i + 1);
+        } else {
+            return "No extension found";
+        }
+    }
+
+    public static MouseListener getMyMouseListener() {
+        return  new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JPanel jPanel = (JPanel) e.getSource();
+
+                int fieldID = Integer.parseInt(jPanel.getName());
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        };
+    }
 }

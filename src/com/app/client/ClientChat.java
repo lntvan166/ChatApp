@@ -20,13 +20,17 @@ public class ClientChat {
 
     private String userContact;
 
+    private SendFile sendFile;
+    private FileReceived fileReceived;
+
     private JFrame frameMain;
     private JPanel mainPanel;
     private JLabel username;
     private JTextField chatField;
     private JButton sendButton;
     private JTextArea textArea1;
-    private JButton fileButton;
+    private JButton fileReceivedButton;
+    private JButton sendFileButton;
 
 
     public ClientChat(String userContact) {
@@ -36,18 +40,8 @@ public class ClientChat {
         username.setText(userContact);
         _message = "";
 
-
-        sendButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String message = chatField.getText();
-                User.client.sendMessage(userContact, message);
-
-                chatField.setText("");
-                _message += AppUtil.user + ": "+ message + "\n";
-                refresh();
-            }
-        });
+        sendFile = new SendFile(userContact);
+        fileReceived = new FileReceived();
 
         frameMain = new JFrame("[" + AppUtil.user + "] chat with " + userContact);
         frameMain.setContentPane(mainPanel);
@@ -60,6 +54,32 @@ public class ClientChat {
         });
         frameMain.setLocationRelativeTo(null);
         frameMain.pack();
+
+        sendButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String message = chatField.getText();
+                User.client.sendMessage(userContact, message);
+
+                chatField.setText(" ");
+                _message += AppUtil.user + ": " + message + "\n";
+                refresh();
+            }
+        });
+
+
+        sendFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                sendFile.start();
+            }
+        });
+        fileReceivedButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                fileReceived.start();
+            }
+        });
     }
 
     public String getUserContact() {
@@ -67,7 +87,7 @@ public class ClientChat {
     }
 
     public void addMessage(String message) {
-        _message += userContact + ": "+ message + "\n";
+        _message += userContact + ": " + message + "\n";
         refresh();
     }
 
