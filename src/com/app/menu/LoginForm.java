@@ -26,19 +26,29 @@ public class LoginForm {
     private JButton loginButton;
     private JButton registerButton;
     private JPasswordField passwordField1;
+    private JTextField portField;
 
     public LoginForm() {
+
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String username = textField1.getText();
                 String password = String.valueOf(passwordField1.getPassword());
-                if(!AppUtil.authUser(username, password)) {
+                int port = -1;
+                try {
+                    port = Integer.parseInt(portField.getText());
+                }catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, ex);
+                }
+                if(port == -1) {
+                    JOptionPane.showMessageDialog(null, "Port is a number!");
+                }else if(!AppUtil.authUser(username, password)) {
                     JOptionPane.showMessageDialog(null, "Invalid username/password!");
                 } else {
                     AppUtil.user = username;
                     try {
-                        Socket socket = new Socket("localhost", 1606);
+                        Socket socket = new Socket("localhost", port);
 
                         User.client = new ThisClient(socket, username);
                         User.userOnline = new UserOnline(username);

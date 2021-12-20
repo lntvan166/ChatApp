@@ -35,7 +35,9 @@ public class RegisterForm {
                 String password = String.valueOf(passwordField1.getPassword());
                 String confirm = String.valueOf(passwordField2.getPassword());
 
-                if (Objects.equals(username, "") ||  password.equals(""))
+                if (AppUtil.isContainUser(username)) {
+                    JOptionPane.showMessageDialog(null, "This username already exist!");
+                } else if (Objects.equals(username, "") ||  password.equals(""))
                     JOptionPane.showMessageDialog(null, "Cannot use empty information!");
                 else {
                     if (!password.equals(confirm)) {

@@ -61,6 +61,7 @@ public class SendFile {
                 if(fileToSend == null) fileLabel.setText("Choose file first");
                 else {
                     User.client.sendFile(userContact, fileToSend);
+                    frameMain.setVisible(false);
                 }
             }
         });
