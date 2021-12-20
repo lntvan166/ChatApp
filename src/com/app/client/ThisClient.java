@@ -21,45 +21,44 @@ import java.util.Scanner;
  */
 public class ThisClient {
     private Socket socket;
-    private BufferedReader bufferedReader;
-    private BufferedWriter bufferedWriter;
+//    private BufferedReader bufferedReader;
+//    private BufferedWriter bufferedWriter;
     private DataOutputStream dataOutputStream;
     private DataInputStream dataInputStream;
     private String username;
 
-    private ArrayList<MyFile> myFiles = new ArrayList<>();
+    private int fileCount;
+
 
     public ThisClient(Socket socket, String username) {
         try {
             this.socket = socket;
-            this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            this.fileCount = 0;
+//            this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+//            this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.dataOutputStream =  new DataOutputStream(socket.getOutputStream());
             this.dataInputStream = new DataInputStream(socket.getInputStream());
             this.username = username;
-            bufferedWriter.write(username);
-            bufferedWriter.newLine();
-            bufferedWriter.flush();
+            dataOutputStream.writeUTF(username);
+            dataOutputStream.flush();
         } catch (IOException e) {
-            closeEverything(socket, bufferedWriter, bufferedReader);
+            closeEverything(socket, dataInputStream, dataOutputStream);
         }
     }
 
     public void getUserOnline() throws IOException {
-        bufferedWriter.write("GetUserOnline@#@" + username + "@#@" + username + "@#@getOnlineUser");
-        bufferedWriter.newLine();
-        bufferedWriter.flush();
+        dataOutputStream.writeUTF("GetUserOnline@#@" + username + "@#@" + username + "@#@getOnlineUser");
+        dataOutputStream.flush();
     }
 
     public void sendMessage(String userTo, String message) {
         try {
             if (socket.isConnected()) {
-                bufferedWriter.write("message@#@" + username + "@#@" + userTo + "@#@" + message);
-                bufferedWriter.newLine();
-                bufferedWriter.flush();
+                dataOutputStream.writeUTF("message@#@" + username + "@#@" + userTo + "@#@" + message);
+                dataOutputStream.flush();
             }
         } catch (IOException e) {
-            closeEverything(socket, bufferedWriter, bufferedReader);
+            closeEverything(socket, dataInputStream, dataOutputStream);
         }
     }
 
@@ -71,7 +70,7 @@ public class ThisClient {
 
                 while (socket.isConnected()) {
                     try {
-                        msgFromAnother = bufferedReader.readLine();
+                        msgFromAnother = dataInputStream.readUTF();
                         System.out.println("Receive: " + msgFromAnother);
                         if(Objects.equals(msgFromAnother, "File")) {
                             handleFileReceived();
@@ -79,7 +78,7 @@ public class ThisClient {
                             handleMessageReceive(msgFromAnother);
                         }
                     } catch (IOException e) {
-                        closeEverything(socket, bufferedWriter, bufferedReader);
+                        closeEverything(socket, dataInputStream, dataOutputStream);
                     }
                 }
 
@@ -89,7 +88,7 @@ public class ThisClient {
 
     public void handleFileReceived() throws IOException {
         System.out.println("---------receive");
-        String userFrom = bufferedReader.readLine();
+        String userFrom = dataInputStream.readUTF();
         System.out.println(userFrom);
         int fileNameLength = dataInputStream.readInt();
         System.out.println(fileNameLength);
@@ -98,7 +97,7 @@ public class ThisClient {
             byte[] fileNameBytes = new byte[fileNameLength];
             dataInputStream.readFully(fileNameBytes, 0, fileNameBytes.length);
             String filename = new String(fileNameBytes);
-            System.out.println("file receive"+filename);
+            System.out.println(Arrays.toString(fileNameBytes));
             int fileContentLength = dataInputStream.readInt();
             System.out.println(fileContentLength);
 
@@ -107,7 +106,8 @@ public class ThisClient {
                 dataInputStream.readFully(fileContentBytes, 0, fileContentLength);
                 System.out.println(Arrays.toString(fileContentBytes));
 
-//                User.userOnline.receiveFile(userFrom, filename, fileContentBytes);
+                User.userOnline.receiveFile(fileCount, userFrom, filename, fileContentBytes);
+                fileCount++;
             }
         }
     }
@@ -140,13 +140,11 @@ public class ThisClient {
         System.out.println("-----send");
         try {
             if (socket.isConnected()) {
-                bufferedWriter.write("File");
-                bufferedWriter.newLine();
-                bufferedWriter.flush();
+                dataOutputStream.writeUTF("File");
+                dataOutputStream.flush();
                 System.out.println("Send file");
-                bufferedWriter.write(userTo);
-                bufferedWriter.newLine();
-                bufferedWriter.flush();
+                dataOutputStream.writeUTF(userTo);
+                dataOutputStream.flush();
                 System.out.println("Send" +userTo);
 
                 FileInputStream fileInputStream = new FileInputStream(fileToSend.getAbsolutePath());
@@ -160,22 +158,22 @@ public class ThisClient {
                 dataOutputStream.writeInt(fileNameBytes.length);
                 System.out.println(fileNameBytes.length);
                 dataOutputStream.write(fileNameBytes);
-                System.out.println(fileNameBytes.toString());
+                System.out.println(Arrays.toString(fileNameBytes));
 
                 dataOutputStream.writeInt(fileContentBytes.length);
                 System.out.println(fileContentBytes.length);
                 dataOutputStream.write(fileContentBytes);
-                System.out.println(fileContentBytes.toString());
+                System.out.println(Arrays.toString(fileContentBytes));
 
 
 
             }
         } catch (IOException e) {
-            closeEverything(socket, bufferedWriter, bufferedReader);
+            closeEverything(socket, dataInputStream, dataOutputStream);
         }
     }
 
-    public void closeEverything(Socket socket, BufferedWriter bufferedWriter, BufferedReader bufferedReader) {
+    public void closeEverything(Socket socket, DataInputStream bufferedWriter, DataOutputStream bufferedReader) {
         try {
             if (bufferedReader != null) {
                 bufferedReader.close();

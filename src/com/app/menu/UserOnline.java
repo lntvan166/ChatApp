@@ -1,10 +1,7 @@
 package com.app.menu;
 
 import com.app.client.ClientChat;
-import com.app.util.ChatWindow;
-import com.app.util.Message;
-import com.app.util.MyFile;
-import com.app.util.User;
+import com.app.util.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -122,10 +119,30 @@ public class UserOnline {
         }
     }
 
-    public void receiveFile(String userContact, String fileName, byte[] file) {
+    public void receiveFile(int fileID, String userContact, String fileName, byte[] file) {
         for(ClientChat clientChat: clientChatList) {
             if (Objects.equals(userContact, clientChat.getUserContact())){
+//                JScrollPane receiveFilePane = clientChat.getFileReceived().getFileScrollPane();
+//
+//                JPanel jFileRow= new JPanel();
+//                jFileRow.setLayout(new BoxLayout(jFileRow, BoxLayout.Y_AXIS));
+//
+//                JLabel jlFilename = new JLabel(fileName);
+//                jlFilename.setFont(new Font("Aria", Font.BOLD, 16));
+//
+//                if (AppUtil.getFileExtension(fileName).equalsIgnoreCase("txt")) {
+//                    jFileRow.setName(String.valueOf(fileID));
+//                    jFileRow.addMouseListener(clientChat.getMyMouseListener(fileID, fileName, file));
+//
+//                    jFileRow.add(jlFilename);
+//                    receiveFilePane.add(jFileRow);
+//                    clientChat.getFileReceived().refresh();
+//                }
+//
+//                clientChat.myFiles.add(new MyFile(fileID, fileName, file, AppUtil.getFileExtension(fileName)));
 
+                clientChat.getFileReceived().myFiles.add(new MyFile(fileName, file, AppUtil.getFileExtension(fileName)));
+                clientChat.getFileReceived().refresh();
             }
         }
     }

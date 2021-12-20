@@ -1,13 +1,15 @@
 package com.app.client;
 
 import com.app.util.AppUtil;
+import com.app.util.MyFile;
 import com.app.util.User;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * com.app.client
@@ -33,6 +35,8 @@ public class ClientChat {
     private JButton sendFileButton;
 
 
+
+
     public ClientChat(String userContact) {
 
 
@@ -41,7 +45,7 @@ public class ClientChat {
         _message = "";
 
         sendFile = new SendFile(userContact);
-        fileReceived = new FileReceived();
+        fileReceived = new FileReceived(userContact);
 
         frameMain = new JFrame("[" + AppUtil.user + "] chat with " + userContact);
         frameMain.setContentPane(mainPanel);
@@ -82,6 +86,10 @@ public class ClientChat {
         });
     }
 
+    public FileReceived getFileReceived() {
+        return fileReceived;
+    }
+
     public String getUserContact() {
         return userContact;
     }
@@ -100,4 +108,54 @@ public class ClientChat {
         textArea1.validate();
         textArea1.repaint();
     }
+
+//    public MouseListener getMyMouseListener(int fieldID, String filename, byte[] file) {
+//        return  new MouseListener() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                JPanel jPanel = (JPanel) e.getSource();
+//
+//                int fieldID = Integer.parseInt(jPanel.getName());
+//
+//                for(MyFile myFile: myFiles) {
+//                    if (myFile.getId() == fieldID) {
+//                        JFrame cancelFrame = new JFrame("DOWNLOAD");
+//                        if(JOptionPane.showConfirmDialog(cancelFrame, "Confirm if you want to download", "DOWNLOAD",
+//                                JOptionPane.YES_NO_OPTION)==JOptionPane.YES_NO_OPTION) {
+//                            File fileToDownLoad = new File(filename);
+//                            try {
+//                                FileOutputStream fileOutputStream = new FileOutputStream(fileToDownLoad);
+//                                fileOutputStream.write(file);
+//                                fileOutputStream.close();
+//                            } catch (IOException ex) {
+//                                JOptionPane.showMessageDialog(null, ex);
+//                            }
+//                        }
+//                    }
+//
+//                }
+//
+//            }
+//
+//            @Override
+//            public void mousePressed(MouseEvent e) {
+//
+//            }
+//
+//            @Override
+//            public void mouseReleased(MouseEvent e) {
+//
+//            }
+//
+//            @Override
+//            public void mouseEntered(MouseEvent e) {
+//
+//            }
+//
+//            @Override
+//            public void mouseExited(MouseEvent e) {
+//
+//            }
+//        };
+//    }
 }

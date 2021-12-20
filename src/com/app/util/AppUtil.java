@@ -103,35 +103,5 @@ public class AppUtil {
         }
     }
 
-    public static MouseListener getMyMouseListener() {
-        return  new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                JPanel jPanel = (JPanel) e.getSource();
 
-                int fieldID = Integer.parseInt(jPanel.getName());
-
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        };
-    }
 }
