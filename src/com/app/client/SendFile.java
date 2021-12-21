@@ -58,7 +58,7 @@ public class SendFile {
         sendFileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(fileToSend == null) fileLabel.setText("Choose file first");
+                if(fileToSend == null) fileLabel.setText("Choose a file first");
                 else {
                     User.client.sendFile(userContact, fileToSend);
                     frameMain.setVisible(false);

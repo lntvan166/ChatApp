@@ -1,8 +1,10 @@
 package com.app.client;
 
+import com.app.util.AppUtil;
 import com.app.util.MyFile;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -22,10 +24,10 @@ import java.util.List;
 public class FileReceived {
     private JFrame frameMain;
     private JPanel mainPanel;
-    private JScrollPane fileScrollPane;
     private JLabel userLabel;
+    private JPanel filePane;
 
-    public List<MyFile> myFiles = new ArrayList<>();
+    private List<MyFile> myFiles = new ArrayList<>();
 
     FileReceived(String userContact) {
         userLabel.setText("File receive from " + userContact);
@@ -43,23 +45,25 @@ public class FileReceived {
         frameMain.pack();
     }
 
-    public JScrollPane getFileScrollPane() {
-        return fileScrollPane;
+    public JPanel getFilePane() {
+        return filePane;
     }
 
     public void start() {
         frameMain.setVisible(true);
     }
 
-    public void refresh() {
-        fileScrollPane.removeAll();
+    public void refresh(String fileName, byte[] file) {
+        myFiles.add(new MyFile(fileName, file, AppUtil.getFileExtension(fileName)));
+        filePane.removeAll();
+        filePane.setLayout(new GridLayout(4,4));
         JButton[] buttons = new JButton[myFiles.size()];
         for(int i=0; i<myFiles.size();i++) {
             buttons[i] = new JButton(myFiles.get(i).getName());
             buttons[i].setSize(100, 100);
 
-            String filename = myFiles.get(i).getName();
-            byte[] file = myFiles.get(i).getData();
+            String tempFilename = myFiles.get(i).getName();
+            byte[] tempFile = myFiles.get(i).getData();
 
             buttons[i].addActionListener(new ActionListener() {
                 @Override
@@ -67,10 +71,10 @@ public class FileReceived {
                     JFrame cancelFrame = new JFrame("DOWNLOAD");
                         if(JOptionPane.showConfirmDialog(cancelFrame, "Confirm if you want to download", "DOWNLOAD",
                                 JOptionPane.YES_NO_OPTION)==JOptionPane.YES_NO_OPTION) {
-                            File fileToDownLoad = new File(filename);
+                            File fileToDownLoad = new File(tempFilename);
                             try {
                                 FileOutputStream fileOutputStream = new FileOutputStream(fileToDownLoad);
-                                fileOutputStream.write(file);
+                                fileOutputStream.write(tempFile);
                                 fileOutputStream.close();
                             } catch (IOException ex) {
                                 JOptionPane.showMessageDialog(null, ex);
@@ -78,7 +82,7 @@ public class FileReceived {
                         }
                 }
             });
-            fileScrollPane.add(buttons[i]);
+            filePane.add(buttons[i]);
         }
         frameMain.validate();
         frameMain.repaint();

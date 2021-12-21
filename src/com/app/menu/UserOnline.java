@@ -141,8 +141,7 @@ public class UserOnline {
 //
 //                clientChat.myFiles.add(new MyFile(fileID, fileName, file, AppUtil.getFileExtension(fileName)));
 
-                clientChat.getFileReceived().myFiles.add(new MyFile(fileName, file, AppUtil.getFileExtension(fileName)));
-                clientChat.getFileReceived().refresh();
+                clientChat.getFileReceived().refresh(fileName, file);
             }
         }
     }
