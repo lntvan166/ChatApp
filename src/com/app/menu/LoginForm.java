@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -26,7 +28,6 @@ public class LoginForm {
     private JButton loginButton;
     private JButton registerButton;
     private JPasswordField passwordField1;
-    private JTextField portField;
 
     public LoginForm() {
 
@@ -35,31 +36,41 @@ public class LoginForm {
             public void actionPerformed(ActionEvent e) {
                 String username = textField1.getText();
                 String password = String.valueOf(passwordField1.getPassword());
-                int port = -1;
+
                 try {
-                    port = Integer.parseInt(portField.getText());
-                }catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, ex);
-                }
-                if(port == -1) {
-                    JOptionPane.showMessageDialog(null, "Port is a number!");
-                }else if(!AppUtil.authUser(username, password)) {
-                    JOptionPane.showMessageDialog(null, "Invalid username/password!");
-                } else {
-                    AppUtil.user = username;
-                    try {
-                        Socket socket = new Socket("localhost", port);
+                    Socket socket = new Socket("localhost", User.port);
+                    DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                    DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+
+                    dataOutputStream.writeUTF("auth");
+                    dataOutputStream.flush();
+                    dataOutputStream.writeUTF(username);
+                    dataOutputStream.flush();
+                    dataOutputStream.writeUTF(password);
+                    dataOutputStream.flush();
+
+                    String auth = dataInputStream.readUTF();
+
+
+
+                    if (auth.equals("true")) {
+                        AppUtil.user = username;
 
                         User.client = new ThisClient(socket, username);
                         User.userOnline = new UserOnline(username);
 
                         User.client.getUserOnline();
                         User.client.listenForMessage();
-
-                        frameMain.setVisible(false);
-                    } catch (IOException ex) {
-                        JOptionPane.showMessageDialog(null, ex);
+                    } else {
+                        dataOutputStream.close();
+                        dataInputStream.close();
+                        socket.close();
+                        JOptionPane.showMessageDialog(null, "Invalid username/password!");
                     }
+
+                    frameMain.setVisible(false);
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, ex);
                 }
             }
         });
@@ -80,8 +91,8 @@ public class LoginForm {
             @Override
             public void windowClosing(WindowEvent e) {
                 JFrame cancelFrame = new JFrame("EXIT");
-                if(JOptionPane.showConfirmDialog(cancelFrame, "Confirm if you want to exit", "EXIT",
-                        JOptionPane.YES_NO_OPTION)==JOptionPane.YES_NO_OPTION) {
+                if (JOptionPane.showConfirmDialog(cancelFrame, "Confirm if you want to exit", "EXIT",
+                        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_NO_OPTION) {
                     System.exit(0);
                 }
             }

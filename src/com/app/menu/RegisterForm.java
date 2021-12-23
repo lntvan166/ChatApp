@@ -8,7 +8,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.Objects;
 
 /**
@@ -35,23 +38,37 @@ public class RegisterForm {
                 String password = String.valueOf(passwordField1.getPassword());
                 String confirm = String.valueOf(passwordField2.getPassword());
 
-                if (AppUtil.isContainUser(username)) {
-                    JOptionPane.showMessageDialog(null, "This username already exist!");
-                } else if (Objects.equals(username, "") ||  password.equals(""))
+                if (Objects.equals(username, "") || password.equals(""))
                     JOptionPane.showMessageDialog(null, "Cannot use empty information!");
-                else {
-                    if (!password.equals(confirm)) {
-                        JOptionPane.showMessageDialog(null, "Password confirm failed!");
+                else if (!password.equals(confirm)) {
+                    JOptionPane.showMessageDialog(null, "Password confirm failed!");
+                }
+
+                try {
+                    Socket socket = new Socket("localhost", User.port);
+                    DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                    DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+
+                    dataOutputStream.writeUTF("register");
+                    dataOutputStream.flush();
+                    dataOutputStream.writeUTF(username);
+                    dataOutputStream.flush();
+                    dataOutputStream.writeUTF(password);
+                    dataOutputStream.flush();
+
+                    String auth = dataInputStream.readUTF();
+
+                    if(auth.equals("exist")) {
+                        JOptionPane.showMessageDialog(null, "Username already exist!");
                     } else {
-                        AppUtil.userList.add(new User(username, password));
-                        try {
-                            AppUtil.writeUser(AppUtil.userList);
-                        } catch (IOException ex) {
-                            JOptionPane.showMessageDialog(null, "Failed open text file!");
-                        }
                         JOptionPane.showMessageDialog(null, "Register successfully!");
                         frameMain.dispose();
                     }
+                    dataInputStream.close();
+                    dataOutputStream.close();
+                    socket.close();
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, ex);
                 }
             }
         });

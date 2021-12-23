@@ -15,6 +15,8 @@ import java.util.List;
 public class User {
     private String username;
     private String password;
+
+    public static int port;
     public static ThisClient client;
     public static UserOnline userOnline;
 

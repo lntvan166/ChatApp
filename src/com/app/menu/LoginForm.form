@@ -119,46 +119,6 @@
               <text value="Register"/>
             </properties>
           </component>
-          <hspacer id="91930">
-            <constraints/>
-          </hspacer>
-          <hspacer id="f318a">
-            <constraints/>
-          </hspacer>
-          <hspacer id="d0613">
-            <constraints/>
-          </hspacer>
-          <hspacer id="2e131">
-            <constraints/>
-          </hspacer>
-          <hspacer id="4034c">
-            <constraints/>
-          </hspacer>
-          <hspacer id="e1009">
-            <constraints/>
-          </hspacer>
-          <hspacer id="8d521">
-            <constraints/>
-          </hspacer>
-          <hspacer id="11652">
-            <constraints/>
-          </hspacer>
-          <hspacer id="9babc">
-            <constraints/>
-          </hspacer>
-          <component id="92776" class="javax.swing.JLabel">
-            <constraints/>
-            <properties>
-              <text value="Port"/>
-            </properties>
-          </component>
-          <component id="8bcae" class="javax.swing.JTextField" binding="portField">
-            <constraints/>
-            <properties>
-              <minimumSize width="100" height="30"/>
-              <preferredSize width="100" height="25"/>
-            </properties>
-          </component>
         </children>
       </grid>
       <grid id="5d5cf" layout-manager="BorderLayout" hgap="0" vgap="0">
