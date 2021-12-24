@@ -42,34 +42,36 @@ public class RegisterForm {
                     JOptionPane.showMessageDialog(null, "Cannot use empty information!");
                 else if (!password.equals(confirm)) {
                     JOptionPane.showMessageDialog(null, "Password confirm failed!");
-                }
+                } else {
+                    try {
+                        Socket socket = new Socket("localhost", User.port);
+                        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                        DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
 
-                try {
-                    Socket socket = new Socket("localhost", User.port);
-                    DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                    DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+                        dataOutputStream.writeUTF("register");
+                        dataOutputStream.flush();
+                        dataOutputStream.writeUTF(username);
+                        dataOutputStream.flush();
+                        dataOutputStream.writeUTF(password);
+                        dataOutputStream.flush();
 
-                    dataOutputStream.writeUTF("register");
-                    dataOutputStream.flush();
-                    dataOutputStream.writeUTF(username);
-                    dataOutputStream.flush();
-                    dataOutputStream.writeUTF(password);
-                    dataOutputStream.flush();
+                        String auth = dataInputStream.readUTF();
 
-                    String auth = dataInputStream.readUTF();
-
-                    if(auth.equals("exist")) {
-                        JOptionPane.showMessageDialog(null, "Username already exist!");
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Register successfully!");
-                        frameMain.dispose();
+                        if(auth.equals("exist")) {
+                            JOptionPane.showMessageDialog(null, "Username already exist!");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Register successfully!");
+                            frameMain.dispose();
+                        }
+                        dataInputStream.close();
+                        dataOutputStream.close();
+                        socket.close();
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(null, ex);
                     }
-                    dataInputStream.close();
-                    dataOutputStream.close();
-                    socket.close();
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(null, ex);
                 }
+
+
             }
         });
         cancelButton.addActionListener(new ActionListener() {

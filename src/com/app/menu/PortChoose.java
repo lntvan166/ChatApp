@@ -51,7 +51,7 @@ public class PortChoose {
     }
 
     public void start() {
-        frameMain = new JFrame("Server chat");
+        frameMain = new JFrame("App chat");
         frameMain.setContentPane(panelMain);
         frameMain.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frameMain.addWindowListener(new WindowAdapter() {

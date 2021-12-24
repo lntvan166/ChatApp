@@ -61,6 +61,9 @@ public class LoginForm {
 
                         User.client.getUserOnline();
                         User.client.listenForMessage();
+
+                        frameMain.setVisible(false);
+
                     } else {
                         dataOutputStream.close();
                         dataInputStream.close();
@@ -68,9 +71,8 @@ public class LoginForm {
                         JOptionPane.showMessageDialog(null, "Invalid username/password!");
                     }
 
-                    frameMain.setVisible(false);
                 } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(null, ex);
+                    JOptionPane.showMessageDialog(null, "Failed to connect to server");
                 }
             }
         });
